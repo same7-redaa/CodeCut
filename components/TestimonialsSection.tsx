@@ -73,18 +73,18 @@ const testimonials: Testimonial[] = [
 ];
 
 // Real client testimonial images from local folder
-import testimonial1 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.44.34 AM.jpeg?url';
-import testimonial2 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM.jpeg?url';
-import testimonial3 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (1).jpeg?url';
-import testimonial4 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (2).jpeg?url';
-import testimonial5 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (3).jpeg?url';
-import testimonial6 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (4).jpeg?url';
-import testimonial7 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (5).jpeg?url';
-import testimonial8 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (6).jpeg?url';
-import testimonial9 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.49 AM (7).jpeg?url';
-import testimonial10 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.48 AM.jpeg?url';
-import testimonial11 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.48 AM (1).jpeg?url';
-import testimonial12 from '../أراء العملاء/WhatsApp Image 2025-10-18 at 10.43.48 AM (2).jpeg?url';
+import testimonial1 from '../testimonials/testimonial-1.jpeg?url';
+import testimonial2 from '../testimonials/testimonial-2.jpeg?url';
+import testimonial3 from '../testimonials/testimonial-3.jpeg?url';
+import testimonial4 from '../testimonials/testimonial-4.jpeg?url';
+import testimonial5 from '../testimonials/testimonial-5.jpeg?url';
+import testimonial6 from '../testimonials/testimonial-6.jpeg?url';
+import testimonial7 from '../testimonials/testimonial-7.jpeg?url';
+import testimonial8 from '../testimonials/testimonial-8.jpeg?url';
+import testimonial9 from '../testimonials/testimonial-9.jpeg?url';
+import testimonial10 from '../testimonials/testimonial-10.jpeg?url';
+import testimonial11 from '../testimonials/testimonial-11.jpeg?url';
+import testimonial12 from '../testimonials/testimonial-12.jpeg?url';
 
 const testimonialImages = [
   testimonial1,
