@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicon with rounded corners and larger size -->
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+    <link rel="shortcut icon" type="image/jpeg" href="/favicon.jpg" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.jpg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#dc2626" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>كود كت - وكالة التسويق الإلكتروني</title>
+    
+    <!-- Google Fonts - Rubik Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Rubik', 'sans-serif'],
+              rubik: ['Rubik', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* For smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      * {
+        font-family: 'Rubik', sans-serif !important;
+      }
+
+      body {
+        background-color: #000;
+        color: #fff;
+        overflow-x: hidden;
+        position: relative;
+        font-family: 'Rubik', sans-serif;
+      }
+      
+      /* Neon glow effect */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background: radial-gradient(circle at 15% 20%, rgba(220, 38, 38, 0.25), transparent 40%),
+                    radial-gradient(circle at 85% 70%, rgba(220, 38, 38, 0.2), transparent 40%);
+        filter: blur(120px);
+        transform: translateZ(0); /* GPU acceleration */
+        animation: drift 20s infinite alternate linear;
+      }
+
+      @keyframes drift {
+        from {
+          transform: translate(-10%, -15%) rotate(0deg);
+        }
+        to {
+          transform: translate(10%, 15%) rotate(20deg);
+        }
+      }
+
+      /* Fade in and slide up animation for images */
+      @keyframes fadeInSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Simple fade in for accent elements */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 0.5;
+          transform: scale(1);
+        }
+      }
+
+      /* Neon glow pulse animation */
+      @keyframes neonPulse {
+        0%, 100% {
+          text-shadow: 0 0 10px rgba(239, 68, 68, 0.8),
+                       0 0 20px rgba(239, 68, 68, 0.6),
+                       0 0 30px rgba(239, 68, 68, 0.4);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(239, 68, 68, 1),
+                       0 0 40px rgba(239, 68, 68, 0.8),
+                       0 0 60px rgba(239, 68, 68, 0.6);
+        }
+      }
+
+      /* Neon border animation */
+      @keyframes neonBorder {
+        0%, 100% {
+          box-shadow: 0 0 5px rgba(239, 68, 68, 0.5),
+                      0 0 10px rgba(239, 68, 68, 0.3),
+                      inset 0 0 5px rgba(239, 68, 68, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 10px rgba(239, 68, 68, 0.8),
+                      0 0 20px rgba(239, 68, 68, 0.5),
+                      inset 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+      }
+
+      /* Animated particles */
+      @keyframes floatUp {
+        0% {
+          transform: translateY(100vh) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      @keyframes floatSide {
+        0%, 100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(30px);
+        }
+      }
+
+      #root {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
