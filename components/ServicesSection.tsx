@@ -11,7 +11,7 @@ const ServicesSection: React.FC = () => {
   const services = [
   {
     id: 'video-shooting',
-    image: '/ولد صورة منسبة عرضية لخدمة تصوير الفيديوهات_تصوير احترافي للمحتوى الإعلاني والترويجي باستخدام معدات عالية الجودة، مع التركيز على الزوايا والإضاءة التي تعكس هوية البراند..jpg',
+    image: '/services/تصوير.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -24,7 +24,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'video-editing',
-    image: '/ولد صورة مونتاج الفيديوهات_تحرير احترافي للفيديوهات يشمل تقطيع المشاهد، تصحيح الألوان، إضافة مؤثرات بصرية وصوتية، وتحويل المادة الخام إلى قصة جذابة..jpg',
+    image: '/services/مونتاج الفيديوهات.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -38,7 +38,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'graphic-design',
-    image: '/ولد صورة تصميم الجرافيك_تصميمات ثابتة مميزة تشمل البوسترات، البنرات، منشورات السوشيال ميديا، والعناصر البصرية التي تعبر عن هوية البراند..jpg',
+    image: '/services/تصميم جرافيك.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -51,7 +51,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'motion-graphics',
-    image: '/ولد صورة الموشن جرافيك_فيديوهات موشن متحركة تشرح الأفكار والخدمات بشكل بصري جذاب، باستخدام الرسوم المتحركة والنصوص الديناميكية..jpg',
+    image: '/services/موشن جرافيك.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -64,7 +64,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'content-creation',
-    image: '/ولد صورة صناعة المحتوى_صناعة محتوى احترافي لمنصات التواصل الاجتماعي والمدونات والحملات التسويقية بما يجذب جمهورك ويحقق النتائج..jpg',
+    image: '/services/صناعة محتوي.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -77,7 +77,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'voice-over',
-    image: '/ولد صورة التعليق الصوتي_تسجيلات صوتية احترافية تناسب الإعلانات، الفيديوهات التوضيحية، والموشن جرافيك، بأصوات متنوعة وجودة عالية..jpg',
+    image: '/services/صناعة محتوي.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
@@ -90,7 +90,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'ads-management',
-    image: '/ولد صورة إدارة الإعلانات الممولة_إعداد وإدارة الحملات الإعلانية على منصات التواصل الاجتماعي ومحركات البحث لتحقيق أفضل عائد على الاستثمار..jpg',
+    image: '/services/اعلانات ممولة.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -103,7 +103,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'visual-identity',
-    image: '/ولد صورةالهوية البصرية وتصميم الشعار والبراندينج_بناء هوية بصرية متكاملة وتصميم شعارات احترافية تعبر عن شخصية البراند وتترك انطباعًا قويًا في ذهن الجمهور..jpg',
+    image: '/services/هوية بصرية.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -116,7 +116,7 @@ const ServicesSection: React.FC = () => {
   },
   {
     id: 'web-development',
-    image: '/ولد صورةتصميم وتطوير المواقع_إنشاء مواقع إلكترونية عصرية ومتجاوبة مع تصاميم جذابة وتجربة مستخدم سلسة، من الصفحات التعريفية إلى منصات التجارة الإلكترونية الكاملة..jpg',
+    image: '/services/مواقع.jpg',
     icon: (
       <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />

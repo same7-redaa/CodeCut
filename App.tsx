@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -15,6 +15,17 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PaymentSection from './components/PaymentSection';
 import { prefetchAllData } from './utils/dataPrefetch';
+
+// Component to scroll to top on route change
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const HomePage: React.FC = () => {
   return (
@@ -55,6 +66,7 @@ const App: React.FC = () => {
   return (
     <LanguageProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Admin Routes - No Header */}
           <Route path="/admin/login" element={<Login />} />
@@ -66,6 +78,7 @@ const App: React.FC = () => {
               <Header />
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/portfolio" element={<ServicePortfolio />} />
                 <Route path="/portfolio/:serviceId" element={<ServicePortfolio />} />
               </Routes>
             </>
