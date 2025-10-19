@@ -72,33 +72,20 @@ const testimonials: Testimonial[] = [
   }
 ];
 
-// Real client testimonial images from local folder
-import testimonial1 from '../testimonials/testimonial-1.jpeg?url';
-import testimonial2 from '../testimonials/testimonial-2.jpeg?url';
-import testimonial3 from '../testimonials/testimonial-3.jpeg?url';
-import testimonial4 from '../testimonials/testimonial-4.jpeg?url';
-import testimonial5 from '../testimonials/testimonial-5.jpeg?url';
-import testimonial6 from '../testimonials/testimonial-6.jpeg?url';
-import testimonial7 from '../testimonials/testimonial-7.jpeg?url';
-import testimonial8 from '../testimonials/testimonial-8.jpeg?url';
-import testimonial9 from '../testimonials/testimonial-9.jpeg?url';
-import testimonial10 from '../testimonials/testimonial-10.jpeg?url';
-import testimonial11 from '../testimonials/testimonial-11.jpeg?url';
-import testimonial12 from '../testimonials/testimonial-12.jpeg?url';
-
+// Real client testimonial images from public folder
 const testimonialImages = [
-  testimonial1,
-  testimonial2,
-  testimonial3,
-  testimonial4,
-  testimonial5,
-  testimonial6,
-  testimonial7,
-  testimonial8,
-  testimonial9,
-  testimonial10,
-  testimonial11,
-  testimonial12
+  '/testimonials/testimonial-1.jpeg',
+  '/testimonials/testimonial-2.jpeg',
+  '/testimonials/testimonial-3.jpeg',
+  '/testimonials/testimonial-4.jpeg',
+  '/testimonials/testimonial-5.jpeg',
+  '/testimonials/testimonial-6.jpeg',
+  '/testimonials/testimonial-7.jpeg',
+  '/testimonials/testimonial-8.jpeg',
+  '/testimonials/testimonial-9.jpeg',
+  '/testimonials/testimonial-10.jpeg',
+  '/testimonials/testimonial-11.jpeg',
+  '/testimonials/testimonial-12.jpeg',
 ];
 
 const TestimonialsSection: React.FC = () => {
