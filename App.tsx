@@ -21,16 +21,19 @@ const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Scroll to top immediately when route changes
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant' // Use instant instead of smooth for immediate scroll
-    });
+    // Multiple attempts to ensure scroll to top works
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+
+    // Immediate scroll
+    scrollToTop();
     
-    // Also ensure body scroll is reset
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    // Fallback scroll after a short delay
+    setTimeout(scrollToTop, 10);
+    setTimeout(scrollToTop, 50);
   }, [pathname]);
 
   return null;
@@ -88,7 +91,7 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/portfolio" element={<ServicePortfolio />} />
-                <Route path="/portfolio/:serviceId" element={<ServicePortfolio />} />
+                <Route path="/portfolio/:serviceId" element={<ServicePortfolio key={window.location.pathname} />} />
               </Routes>
             </>
           } />

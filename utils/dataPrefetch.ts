@@ -44,10 +44,13 @@ export const prefetchAllData = async () => {
 
     // حفظ الفئات حسب الخدمة
     dataCache.categories.clear();
+    console.log('🔍 تحليل الفئات المحملة مسبقاً:');
     categoriesSnapshot.forEach((doc) => {
       const data: any = { id: doc.id, ...doc.data() };
       const serviceId = data.serviceId;
       
+      console.log(`- الفئة: ${data.titleAr || data.titleEn}, Service ID: [${serviceId}]`);
+
       if (!dataCache.categories.has(serviceId)) {
         dataCache.categories.set(serviceId, []);
       }
@@ -56,9 +59,12 @@ export const prefetchAllData = async () => {
 
     // حفظ أعمال البورتفوليو حسب الفئة
     dataCache.portfolioItems.clear();
+    console.log('🔍 تحليل أعمال المعرض المحملة مسبقاً:');
     portfolioSnapshot.forEach((doc) => {
       const data: any = { id: doc.id, ...doc.data() };
       const categoryId = data.categoryId;
+
+      console.log(`- العمل: ${data.title || doc.id}, Category ID: [${categoryId}]`);
       
       if (!dataCache.portfolioItems.has(categoryId)) {
         dataCache.portfolioItems.set(categoryId, []);

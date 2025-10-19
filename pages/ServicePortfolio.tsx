@@ -54,14 +54,20 @@ const ServicePortfolio: React.FC = () => {
     ? serviceNames[serviceId] || { en: 'Portfolio', ar: 'معرض الأعمال' }
     : { en: 'Our Portfolio', ar: 'معرض أعمالنا' };
 
-  // Ensure page starts from top
+  // Ensure page starts from top when component mounts or serviceId changes
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant'
-    });
-  }, [serviceId]); // Re-run when serviceId changes
+    // Force scroll to top immediately
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }, []); // Run on component mount
+
+  useEffect(() => {
+    // Also scroll to top when serviceId changes
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }, [serviceId]);
 
   // إغلاق المودال بمفتاح Escape
   useEffect(() => {
@@ -82,45 +88,107 @@ const ServicePortfolio: React.FC = () => {
     };
   }, [modalItem]);
 
+  // Additional scroll to top when data loads
+  useEffect(() => {
+    if (!loading) {
+      // Ensure scroll to top after data loads
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }, 100);
+    }
+  }, [loading]);
+
   // Fetch categories from Firestore
   useEffect(() => {
     const fetchCategories = async () => {
       if (!serviceId) {
+        console.log('❌ لا يوجد serviceId، توقف التحميل');
         setLoading(false);
         return;
       }
       
+      console.log('🚀 بدء تحميل الفئات للخدمة:', serviceId);
       setLoading(true);
       try {
         // محاولة الحصول على البيانات من الكاش أولاً
+        console.log('🔍 البحث عن بيانات الفئات في الكاش للخدمة:', serviceId);
         const cachedCategories = getCachedCategories(serviceId);
         
-        if (cachedCategories) {
+        if (cachedCategories && cachedCategories.length > 0) {
           // استخدام البيانات المحملة مسبقاً
+          console.log('⚡ تم العثور على فئات في الكاش:', cachedCategories.length, cachedCategories);
           setCategories(cachedCategories);
           if (cachedCategories.length > 0 && !selectedCategory) {
             setSelectedCategory(cachedCategories[0].id);
           }
           setLoading(false);
           console.log('⚡ تم تحميل الفئات فوراً من الكاش');
-        } else {
-          // تحميل من Firebase إذا لم يكن هناك كاش
-          const q = query(collection(db, 'categories'), where('serviceId', '==', serviceId));
-          const querySnapshot = await getDocs(q);
-          const items: Category[] = [];
-          querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() } as Category);
+        }
+        
+        // دائماً حاول التحميل من Firebase للحصول على أحدث البيانات
+        console.log('🔥 جاري تحميل الفئات من Firebase للخدمة:', serviceId);
+        console.log('🔧 معلومات Firebase للفئات:');
+        console.log('- DB Instance:', db);
+        console.log('- Collection: categories');
+        console.log('- Query Filter: serviceId ==', serviceId);
+        
+        const q = query(collection(db, 'categories'), where('serviceId', '==', serviceId));
+        console.log('📝 Categories Query Object:', q);
+        
+        const querySnapshot = await getDocs(q);
+        console.log('📊 Categories Query Results:');
+        console.log('- Snapshot size:', querySnapshot.size);
+        console.log('- Snapshot empty:', querySnapshot.empty);
+        console.log('- All docs:', querySnapshot.docs.map(doc => ({id: doc.id, data: doc.data()})));
+        
+        const items: Category[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log('📂 معالجة فئة:', {
+            docId: doc.id,
+            rawData: data,
+            serviceId: data.serviceId,
+            titleAr: data.titleAr,
+            titleEn: data.titleEn
           });
+          items.push({ id: doc.id, ...data } as Category);
+        });
+        
+        console.log('📋 إجمالي الفئات المحملة من Firebase:', items.length);
+        if (items.length > 0) {
           setCategories(items);
           
           // Auto-select first category if available
           if (items.length > 0 && !selectedCategory) {
+            console.log('✅ تم تحديد الفئة الافتراضية:', items[0].id);
             setSelectedCategory(items[0].id);
           }
-          setLoading(false);
+        } else {
+          console.warn('⚠️ لم يتم العثور على فئات لهذه الخدمة، سيتم إنشاء فئة افتراضية:', serviceId);
+          // إنشاء فئة افتراضية إذا لم توجد
+          const defaultCategory: Category = {
+            id: `default-${serviceId}`,
+            serviceId: serviceId,
+            titleEn: serviceName.en,
+            titleAr: serviceName.ar
+          };
+          setCategories([defaultCategory]);
+          setSelectedCategory(defaultCategory.id);
         }
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error('❌ خطأ في جلب الفئات:', error);
+        // إنشاء فئة افتراضية عند حدوث خطأ
+        const defaultCategory: Category = {
+          id: `error-${serviceId}`,
+          serviceId: serviceId,
+          titleEn: serviceName.en,
+          titleAr: serviceName.ar
+        };
+        setCategories([defaultCategory]);
+        setSelectedCategory(defaultCategory.id);
         setLoading(false);
       }
     };
@@ -135,31 +203,66 @@ const ServicePortfolio: React.FC = () => {
       
       setLoading(true);
       try {
-        // محاولة الحصول على البيانات من الكاش أولاً
-        const cachedItems = getCachedPortfolioItems(selectedCategory);
+        // تحميل مباشر من Firebase دائماً للحصول على أحدث البيانات
+        console.log('🎯 جاري تحميل أعمال المعرض من Firebase للفئة:', selectedCategory);
+        console.log('🔧 معلومات Firebase:');
+        console.log('- DB Instance:', db);
+        console.log('- Collection: portfolioItems');
+        console.log('- Query Filter: categoryId ==', selectedCategory);
         
-        if (cachedItems) {
-          // استخدام البيانات المحملة مسبقاً
-          setPortfolioItems(cachedItems);
-          setLoading(false);
-          console.log('⚡ تم تحميل الأعمال فوراً من الكاش');
-        } else {
-          // تحميل من Firebase إذا لم يكن هناك كاش
-          const q = query(
-            collection(db, 'portfolioItems'), 
-            where('categoryId', '==', selectedCategory)
-          );
-          const querySnapshot = await getDocs(q);
-          const items: PortfolioItem[] = [];
-          querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() } as PortfolioItem);
+        const q = query(
+          collection(db, 'portfolioItems'), 
+          where('categoryId', '==', selectedCategory)
+        );
+        console.log('📝 Query Object:', q);
+        
+        const querySnapshot = await getDocs(q);
+        console.log('📊 Query Results:');
+        console.log('- Snapshot size:', querySnapshot.size);
+        console.log('- Snapshot empty:', querySnapshot.empty);
+        console.log('- Docs:', querySnapshot.docs);
+        
+        const items: PortfolioItem[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log('🖼️ معالجة مستند:', {
+            id: doc.id,
+            data: data,
+            categoryId: data.categoryId,
+            serviceId: data.serviceId
           });
-          setPortfolioItems(items);
-          setLoading(false);
+          items.push({ id: doc.id, ...data } as PortfolioItem);
+        });
+        
+        console.log('🎨 إجمالي الأعمال المحملة:', items.length);
+        setPortfolioItems(items);
+        if (items.length === 0) {
+          console.warn('⚠️ لم يتم العثور على أعمال لهذه الفئة:', selectedCategory);
+          // إضافة عنصر تجريبي عندما لا توجد بيانات
+          const placeholderItem: PortfolioItem = {
+            id: `placeholder-${selectedCategory}`,
+            serviceId: serviceId || '',
+            categoryId: selectedCategory,
+            mediaUrl: '/placeholder-portfolio.jpg',
+            mediaType: 'image' as const,
+            title: 'قريباً سيتم إضافة أعمال جديدة',
+            description: 'نعمل حالياً على إضافة معرض أعمالنا لهذه الخدمة'
+          };
+          setPortfolioItems([placeholderItem]);
         }
       } catch (error) {
-        console.error('Error fetching portfolio items:', error);
-        setLoading(false);
+        console.error('❌ خطأ في جلب أعمال المعرض:', error);
+        // إضافة عنصر تجريبي عند حدوث خطأ
+        const errorItem: PortfolioItem = {
+          id: `error-${selectedCategory}`,
+          serviceId: serviceId || '',
+          categoryId: selectedCategory,
+          mediaUrl: '/placeholder-portfolio.jpg',
+          mediaType: 'image' as const,
+          title: 'خطأ في التحميل',
+          description: 'حدث خطأ في تحميل المعرض. يرجى المحاولة لاحقاً'
+        };
+        setPortfolioItems([errorItem]);
       } finally {
         setLoading(false);
       }
