@@ -5,6 +5,7 @@ import AnimatedSection from './AnimatedSection';
 // Background image placed at project root as: download (4).jpg
 // Use Vite's ?url import for robust path resolution
 import heroBgUrl from '../download (4).jpg?url';
+import logoUrl from '../logo (2).png?url';
 
 const HeroSection: React.FC = () => {
   const { language } = useLanguage();
@@ -35,8 +36,25 @@ const HeroSection: React.FC = () => {
 
       <div className="container mx-auto px-6 text-center relative z-10">
         <AnimatedSection>
+          {/* Logo */}
+          <div className="mb-8">
+            <img 
+              src={logoUrl}
+              alt="Code Cut Logo"
+              className="w-24 h-24 md:w-32 md:h-32 mx-auto object-contain"
+              style={{
+                filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.5))',
+              }}
+            />
+          </div>
+
           {/* Brand Name */}
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold mb-6 leading-tight">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight" style={{
+            fontFamily: '"Playfair Display", "Crimson Text", "Times New Roman", serif',
+            fontWeight: '700',
+            letterSpacing: '4px',
+            fontStyle: 'normal'
+          }}>
             <span className="text-white" style={{
               textShadow: '0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.3)',
             }}>Code Cut</span>
@@ -46,8 +64,11 @@ const HeroSection: React.FC = () => {
           <p className="text-xl md:text-2xl lg:text-3xl text-gray-200 font-bold max-w-4xl mx-auto mb-12 tracking-wide">
             {getTranslation(language, 'tagline')}
           </p>
-          <a
-            href="#contact"
+          <button
+            onClick={() => {
+              const servicesSection = document.getElementById('services');
+              servicesSection?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="inline-flex items-center gap-3 bg-red-600 text-white font-bold text-lg px-8 py-4 rounded-full hover:bg-red-700 transition-transform transform hover:scale-105 duration-300"
             style={{
               boxShadow: '0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3)',
@@ -59,11 +80,11 @@ const HeroSection: React.FC = () => {
               e.currentTarget.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3)';
             }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
             </svg>
             {getTranslation(language, 'orderNow')}
-          </a>
+          </button>
         </AnimatedSection>
       </div>
     </section>

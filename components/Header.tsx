@@ -155,7 +155,7 @@ const Header: React.FC = () => {
 
           {/* Logo */}
           <div className="mb-8">
-            <img src={logoUrl} alt="CodeCut Logo" className="h-10 w-auto mx-auto" />
+            <img src={logoUrl} alt="CodeCut Logo" className="h-16 w-auto mx-auto" />
           </div>
 
           {/* Navigation Links */}
@@ -179,22 +179,6 @@ const Header: React.FC = () => {
               </button>
             ))}
           </nav>
-
-          {/* Language Switcher Mobile */}
-          <button
-            onClick={toggleLanguage}
-            className="px-6 py-2.5 text-base font-bold bg-white text-red-600 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 mb-6"
-            style={{
-              boxShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
-            }}
-          >
-            {language === 'en' ? 'العربية' : 'English'}
-          </button>
-
-          {/* Decorative Elements */}
-          <div className="text-gray-400 text-xs mt-4">
-            Code Cut © 2025
-          </div>
         </div>
       </div>
 

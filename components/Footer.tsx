@@ -8,8 +8,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-black py-8 border-t border-gray-800">
       <div className="container mx-auto px-6 text-center text-gray-500">
-        <p>&copy; {new Date().getFullYear()} CodeCut. {getTranslation(language, 'allRightsReserved')}</p>
-        <p className="text-sm mt-2">{getTranslation(language, 'digitalMarketing')}</p>
+        <p className="text-sm">{getTranslation(language, 'digitalMarketing')}</p>
       </div>
     </footer>
   );
