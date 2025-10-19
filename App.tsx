@@ -12,7 +12,6 @@ import ServicePortfolio from './pages/ServicePortfolio';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PaymentSection from './components/PaymentSection';
-import DeveloperSection from './components/DeveloperSection';
 import { prefetchAllData } from './utils/dataPrefetch';
 
 const HomePage: React.FC = () => {
@@ -27,7 +26,6 @@ const HomePage: React.FC = () => {
         <PaymentSection />
       </main>
       <Footer />
-      <DeveloperSection />
     </div>
   );
 };
