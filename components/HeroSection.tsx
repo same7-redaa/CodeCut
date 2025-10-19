@@ -41,22 +41,26 @@ const HeroSection: React.FC = () => {
             <img 
               src={logoUrl}
               alt="Code Cut Logo"
-              className="w-24 h-24 md:w-32 md:h-32 mx-auto object-contain"
+              className="w-40 h-40 md:w-60 md:h-60 lg:w-72 lg:h-72 xl:w-80 xl:h-80 2xl:w-96 2xl:h-96 mx-auto object-contain"
               style={{
-                filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.5))',
+                filter: 'drop-shadow(0 0 25px rgba(239, 68, 68, 0.6))',
               }}
             />
           </div>
 
           {/* Brand Name */}
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight" style={{
-            fontFamily: '"Playfair Display", "Crimson Text", "Times New Roman", serif',
-            fontWeight: '700',
-            letterSpacing: '4px',
-            fontStyle: 'normal'
+          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-tight" style={{
+            fontFamily: '"BBH Sans Bogle", "Impact", "Arial Black", "Helvetica", sans-serif',
+            fontWeight: '900',
+            letterSpacing: '6px',
+            fontStyle: 'normal',
+            textTransform: 'uppercase',
+            WebkitTextStroke: '1px rgba(255, 255, 255, 0.05)',
+            textStroke: '1px rgba(255, 255, 255, 0.05)'
           }}>
             <span className="text-white" style={{
-              textShadow: '0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.3)',
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.7)',
+              filter: 'contrast(1.3) brightness(1.2) saturate(1.1)',
             }}>Code Cut</span>
           </h1>
           

@@ -48,21 +48,17 @@ const ClientsSection: React.FC = () => {
     fetchClients();
   }, []);
 
-  // Auto-rotate clients every 2 seconds in sequential order
+  // Auto-rotate clients every 3 seconds
   useEffect(() => {
-    if (clients.length === 0) return;
+    if (clients.length <= 6) return; // Don't rotate if we have 6 or fewer clients
     
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        // Move to next client in sequence, restart from 0 when reaching end
-        const nextIndex = (prevIndex + 1) % clients.length;
-        return nextIndex;
-      });
-    }, 2000); // Change every 2 seconds
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.max(1, clients.length - 5));
+    }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
   }, [clients.length]);
-  
+
   return (
     <section id="clients" className="py-20 md:py-32 bg-black">
       <div className="container mx-auto px-6">
@@ -134,33 +130,9 @@ const ClientsSection: React.FC = () => {
             {/* Add CSS for smooth transitions */}
             <style dangerouslySetInnerHTML={{
               __html: `
-                .clients-grid {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  gap: 1rem;
-                  flex-wrap: wrap;
-                  width: 100%;
-                  padding: 2rem 1rem;
-                  transition: all 0.5s ease-in-out;
-                  animation: fadeInUp 0.5s ease-out;
-                }
-                
-                @keyframes fadeInUp {
-                  0% {
-                    opacity: 0;
-                    transform: translateY(20px);
-                  }
-                  100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                  }
-                }
-                
                 .client-item {
-                  flex: 0 0 auto;
                   opacity: 0;
-                  animation: slideIn 0.6s ease-out forwards;
+                  animation: slideInRotate 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
                 }
                 
                 .client-item:nth-child(1) { animation-delay: 0.1s; }
@@ -170,56 +142,77 @@ const ClientsSection: React.FC = () => {
                 .client-item:nth-child(5) { animation-delay: 0.5s; }
                 .client-item:nth-child(6) { animation-delay: 0.6s; }
                 
-                .client-item img {
-                  max-width: 200px;
-                  max-height: 150px;
-                  min-width: 150px;
-                  min-height: 100px;
-                }
-                
-                @keyframes slideIn {
+                @keyframes slideInRotate {
                   0% {
                     opacity: 0;
-                    transform: translateX(-20px);
+                    transform: scale(0.6) translateY(50px) rotateY(-90deg);
+                  }
+                  50% {
+                    opacity: 0.7;
+                    transform: scale(1.1) translateY(-10px) rotateY(10deg);
                   }
                   100% {
                     opacity: 1;
-                    transform: translateX(0);
+                    transform: scale(1) translateY(0) rotateY(0deg);
                   }
                 }
-                
-                @media (min-width: 640px) {
-                  .clients-grid { gap: 1.5rem; }
+
+                .client-item img {
+                  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                  border: 2px solid transparent;
+                }
+
+                .client-item:hover img {
+                  transform: scale(1.15) rotate(5deg);
+                  box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4);
+                  border-color: rgba(239, 68, 68, 0.3);
+                  filter: brightness(1.1) contrast(1.1);
+                }
+
+                /* Responsive adjustments */
+                @media (max-width: 767px) {
                   .client-item img {
-                    max-width: 250px;
-                    max-height: 180px;
-                    min-width: 180px;
-                    min-height: 120px;
+                    border-radius: 16px;
                   }
                 }
-                
-                @media (min-width: 1024px) {
-                  .clients-grid { gap: 2rem; }
+
+                @media (min-width: 768px) {
                   .client-item img {
-                    max-width: 300px;
-                    max-height: 220px;
-                    min-width: 220px;
-                    min-height: 150px;
+                    border-radius: 20px;
                   }
                 }
               `
             }} />
             
-            {/* Static clients grid with auto-rotation */}
-            <div className="w-full">
-              <div className="clients-grid">
+            {/* Clients with rotation - Show 4 on mobile, 6 on desktop */}
+            <div className="w-full overflow-hidden">
+              <div className="flex justify-center items-center gap-4 sm:gap-6 md:gap-8 py-8 max-w-6xl mx-auto px-4">
                 {(() => {
-                  // Show clients in sequential order, cycling through all clients
-                  const clientsPerView = Math.min(4, clients.length); // Show 4 at a time
-                  const displayClients = [];
+                  // Show 4 on mobile, 6 on desktop based on total clients
+                  const mobileCount = 4;
+                  const desktopCount = 6;
                   
-                  // Get consecutive clients starting from currentIndex
-                  for (let i = 0; i < clientsPerView; i++) {
+                  // If we have fewer clients than needed, show all
+                  if (clients.length <= desktopCount) {
+                    return clients.map((client, index) => (
+                      <div 
+                        key={client.id}
+                        className="client-item flex justify-center flex-shrink-0"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <img 
+                          src={client.imageUrl} 
+                          alt={client.name}
+                          loading="lazy"
+                          className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain rounded-2xl transition-all duration-300 hover:scale-105 filter brightness-95 hover:brightness-110 shadow-lg hover:shadow-xl"
+                        />
+                      </div>
+                    ));
+                  }
+                  
+                  // Show rotating subset - desktop gets 6, mobile gets 4
+                  const displayClients = [];
+                  for (let i = 0; i < desktopCount; i++) {
                     const index = (currentIndex + i) % clients.length;
                     displayClients.push(clients[index]);
                   }
@@ -227,13 +220,16 @@ const ClientsSection: React.FC = () => {
                   return displayClients.map((client, index) => (
                     <div 
                       key={`${client.id}-${currentIndex}-${index}`}
-                      className="client-item"
+                      className={`client-item flex justify-center flex-shrink-0 ${
+                        index >= mobileCount ? 'hidden md:flex' : ''
+                      }`}
+                      style={{ animationDelay: `${index * 0.05}s` }}
                     >
                       <img 
                         src={client.imageUrl} 
                         alt={client.name}
                         loading="lazy"
-                        className="w-full h-full object-contain rounded-2xl transition-all duration-300 hover:scale-105 filter brightness-95 hover:brightness-110 shadow-lg hover:shadow-xl"
+                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain rounded-2xl transition-all duration-700 hover:scale-105 filter brightness-95 hover:brightness-110 shadow-lg hover:shadow-xl"
                       />
                     </div>
                   ));

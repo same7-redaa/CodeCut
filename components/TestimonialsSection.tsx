@@ -90,19 +90,80 @@ const testimonialImages = [
 
 const TestimonialsSection: React.FC = () => {
   const { language } = useLanguage();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number>(0);
+  const [touchEnd, setTouchEnd] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  // Auto-rotate images every 2 seconds
+  // Auto-rotate testimonials every 4 seconds
   useEffect(() => {
+    if (testimonialImages.length === 0) return;
+    
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonialImages.length);
-    }, 2000);
+    }, 4000); // Change every 4 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonialImages.length]);
 
+  // Handle touch events for swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0); // Reset touchEnd
+    setTouchStart(e.targetTouches[0].clientX);
+  };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50; // Minimum distance for swipe
+
+    if (distance > minSwipeDistance) {
+      // Swipe left - go to next image
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonialImages.length);
+    }
+    
+    if (distance < -minSwipeDistance) {
+      // Swipe right - go to previous image
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonialImages.length) % testimonialImages.length);
+    }
+  };
+
+  // Handle mouse drag events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setTouchStart(e.clientX);
+    setTouchEnd(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    setTouchEnd(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonialImages.length);
+    }
+    
+    if (distance < -minSwipeDistance) {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonialImages.length) % testimonialImages.length);
+    }
+  };
 
   return (
     <section className="py-20 md:py-32 bg-black">
@@ -132,107 +193,11 @@ const TestimonialsSection: React.FC = () => {
           </p>
         </AnimatedSection>
 
-        {/* Static testimonials grid with auto-rotation */}
+        {/* Testimonials Grid */}
         <div className="w-full">
-          {/* Add CSS with different effects - bouncy and colorful */}
+          {/* Add CSS for modal */}
           <style dangerouslySetInnerHTML={{
             __html: `
-              .testimonials-grid {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 1.5rem;
-                flex-wrap: wrap;
-                width: 100%;
-                padding: 2rem 1rem;
-                transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-                animation: bounceIn 0.8s ease-out;
-              }
-              
-              @keyframes bounceIn {
-                0% {
-                  opacity: 0;
-                  transform: scale(0.3) rotate(-10deg);
-                }
-                50% {
-                  opacity: 0.8;
-                  transform: scale(1.1) rotate(2deg);
-                }
-                100% {
-                  opacity: 1;
-                  transform: scale(1) rotate(0deg);
-                }
-              }
-              
-              .testimonial-item {
-                flex: 0 0 auto;
-                opacity: 0;
-                animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-                position: relative;
-              }
-              
-              .testimonial-item:nth-child(1) { animation-delay: 0.1s; }
-              .testimonial-item:nth-child(2) { animation-delay: 0.25s; }
-              .testimonial-item:nth-child(3) { animation-delay: 0.4s; }
-              .testimonial-item:nth-child(4) { animation-delay: 0.55s; }
-              
-              @keyframes popIn {
-                0% {
-                  opacity: 0;
-                  transform: scale(0.5) translateY(50px) rotate(15deg);
-                }
-                70% {
-                  opacity: 0.9;
-                  transform: scale(1.1) translateY(-10px) rotate(-5deg);
-                }
-                100% {
-                  opacity: 1;
-                  transform: scale(1) translateY(0) rotate(0deg);
-                }
-              }
-              
-              .testimonial-item img {
-                width: 160px;
-                height: 200px;
-                border-radius: 20px;
-                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
-              }
-              
-              .testimonial-item:hover img {
-                transform: scale(1.08) rotate(2deg);
-                box-shadow: 0 20px 50px rgba(239, 68, 68, 0.4);
-                filter: brightness(1.1) contrast(1.1) saturate(1.2);
-              }
-              
-              /* Mobile: Show only 2 images side by side */
-              @media (max-width: 639px) {
-                .testimonials-grid {
-                  gap: 1rem;
-                  justify-content: center;
-                }
-                .testimonial-item img {
-                  width: 140px;
-                  height: 180px;
-                }
-              }
-              
-              @media (min-width: 640px) {
-                .testimonials-grid { gap: 2rem; }
-                .testimonial-item img {
-                  width: 200px;
-                  height: 240px;
-                }
-              }
-              
-              @media (min-width: 1024px) {
-                .testimonials-grid { gap: 2.5rem; }
-                .testimonial-item img {
-                  width: 240px;
-                  height: 280px;
-                }
-              }
-
               .modal-overlay {
                 position: fixed;
                 top: 0;
@@ -245,52 +210,169 @@ const TestimonialsSection: React.FC = () => {
                 align-items: center;
                 z-index: 9999;
                 padding: 1rem;
+                backdrop-filter: blur(5px);
               }
-              
+
+              /* Testimonials Grid Styles */
+              .testimonials-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* Mobile: 2 columns */
+                gap: 1rem;
+                padding: 2rem 0;
+                justify-items: center;
+                max-width: 1200px;
+                margin: 0 auto;
+              }
+
+              @media (min-width: 640px) {
+                .testimonials-grid {
+                  grid-template-columns: repeat(3, 1fr); /* Tablet: 3 columns */
+                  gap: 1.5rem;
+                }
+              }
+
+              @media (min-width: 768px) {
+                .testimonials-grid {
+                  grid-template-columns: repeat(4, 1fr); /* Desktop small: 4 columns */
+                  gap: 2rem;
+                }
+              }
+
+              @media (min-width: 1024px) {
+                .testimonials-grid {
+                  grid-template-columns: repeat(5, 1fr); /* Desktop: 5 columns */
+                  gap: 2rem;
+                }
+              }
+
+              @media (min-width: 1280px) {
+                .testimonials-grid {
+                  grid-template-columns: repeat(6, 1fr); /* Large desktop: 6 columns */
+                  gap: 2.5rem;
+                }
+              }
+
+              .testimonial-item {
+                cursor: pointer;
+                transition: all 0.3s ease;
+              }
+
+              .testimonial-item img {
+                width: 140px;
+                height: 140px;
+                border-radius: 16px;
+                box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+                transition: all 0.3s ease;
+                object-fit: cover;
+              }
+
+              .testimonial-item:hover img {
+                transform: scale(1.05);
+                box-shadow: 0 12px 30px rgba(239, 68, 68, 0.5);
+              }
+
+              @media (min-width: 640px) {
+                .testimonial-item img {
+                  width: 160px;
+                  height: 160px;
+                }
+              }
+
+              @media (min-width: 1024px) {
+                .testimonial-item img {
+                  width: 180px;
+                  height: 180px;
+                }
+              }
+
+              /* Modal Styles */
+              .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.95);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                padding: 1rem;
+                backdrop-filter: blur(5px);
+              }
+
               .modal-content {
-                background: #0f0f0f;
+                background: #1a1a1a;
                 border-radius: 1rem;
                 max-width: 95vw;
                 max-height: 95vh;
                 overflow-y: auto;
                 position: relative;
                 border: 2px solid #333;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
               }
-              
+
+              .modal-close {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: rgba(239, 68, 68, 0.9);
+                color: white;
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 20px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                transition: all 0.3s ease;
+              }
+
+              .modal-close:hover {
+                background: rgba(239, 68, 68, 1);
+                transform: scale(1.1);
+              }
+
               .modal-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 1rem;
-                padding: 1.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 2rem;
+                padding: 3rem 1.5rem 1.5rem 1.5rem;
                 justify-items: center;
+                align-items: start;
               }
-              
+
               .modal-image {
                 width: auto;
                 height: auto;
                 max-width: 100%;
-                max-height: 300px;
+                max-height: none;
                 border-radius: 12px;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s ease;
+                object-fit: contain;
               }
-              
+
               .modal-image:hover {
                 transform: scale(1.05);
-                box-shadow: 0 15px 40px rgba(239, 68, 68, 0.3);
+                box-shadow: 0 15px 40px rgba(239, 68, 68, 0.4);
               }
-              
+
               @media (min-width: 640px) {
                 .modal-grid {
                   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                   gap: 1.5rem;
-                  padding: 2rem;
+                  padding: 3rem 2rem 2rem 2rem;
                 }
                 .modal-image {
                   max-height: 350px;
                 }
               }
-              
+
               @media (min-width: 1024px) {
                 .modal-grid {
                   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -303,103 +385,113 @@ const TestimonialsSection: React.FC = () => {
             `
           }} />
 
-          <div className="testimonials-grid">
-            {(() => {
-              // Show testimonials in sequential order, cycling through all images
-              const testimonialsPerView = Math.min(4, testimonialImages.length);
-              const displayImages = [];
+          {/* Three Images Layout - Center with sides */}
+          <div className="relative w-full max-w-4xl mx-auto px-4 py-8">
+            <div 
+              className="flex items-center justify-center relative min-h-80 md:min-h-96 py-8 select-none cursor-grab active:cursor-grabbing"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+            >
+              {/* Left Background Image */}
+              <div className="absolute left-0 md:left-8 z-10 opacity-60 transform -rotate-12 scale-75">
+                <img 
+                  src={testimonialImages[(currentIndex - 1 + testimonialImages.length) % testimonialImages.length]} 
+                  alt="آراء عملائنا"
+                  className="max-w-[8rem] max-h-48 md:max-w-[10rem] md:max-h-60 w-auto h-auto object-contain rounded-2xl shadow-lg border-2 border-red-500/20 transition-all duration-1000"
+                />
+              </div>
               
-              // Get consecutive images starting from currentIndex
-              for (let i = 0; i < testimonialsPerView; i++) {
-                const index = (currentIndex + i) % testimonialImages.length;
-                displayImages.push(testimonialImages[index]);
-              }
+              {/* Center Main Image */}
+              <div className="relative z-20 cursor-pointer transform transition-all duration-500 hover:scale-105">
+                <img 
+                  src={testimonialImages[currentIndex]} 
+                  alt="آراء عملائنا الرئيسية"
+                  className="max-w-xs max-h-96 md:max-w-md md:max-h-[28rem] lg:max-w-lg lg:max-h-[32rem] w-auto h-auto object-contain rounded-3xl shadow-2xl border-4 border-red-500/30 hover:border-red-500/60 transition-all duration-500"
+                  onClick={() => {
+                    setSelectedImage(testimonialImages[currentIndex]);
+                    setShowModal(true);
+                  }}
+                />
+                <div className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-red-600/20 rounded-3xl blur-sm -z-10"></div>
+              </div>
               
-              return displayImages.map((image, index) => (
-                <div 
-                  key={`${currentIndex}-${index}`}
-                  className={`testimonial-item ${index >= 2 ? 'hidden sm:block' : ''}`}
-                >
-                  <img 
-                    src={image}
-                    alt={`Client testimonial ${currentIndex + index + 1}`}
-                    loading="lazy"
-                    className="object-cover"
-                  />
-                </div>
-              ));
-            })()}
+              {/* Right Background Image */}
+              <div className="absolute right-0 md:right-8 z-10 opacity-60 transform rotate-12 scale-75">
+                <img 
+                  src={testimonialImages[(currentIndex + 1) % testimonialImages.length]} 
+                  alt="آراء عملائنا"
+                  className="max-w-[8rem] max-h-48 md:max-w-[10rem] md:max-h-60 w-auto h-auto object-contain rounded-2xl shadow-lg border-2 border-red-500/20 transition-all duration-1000"
+                />
+              </div>
+            </div>
+            
+            {/* Swipe Instruction */}
+            <div className="text-center mt-4 mb-4">
+              <p className="text-gray-500 text-sm">
+                {language === 'en' ? 'Tap and drag or swipe to navigate' : 'اضغط واسحب أو مرر للتنقل'}
+              </p>
+            </div>
+
+            {/* Navigation Dots */}
+            <div className="flex justify-center mt-4 gap-2">
+              {testimonialImages.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentIndex 
+                      ? 'bg-red-500 shadow-lg scale-125' 
+                      : 'bg-gray-600 hover:bg-gray-500'
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                />
+              ))}
+            </div>
+            
           </div>
 
-          {/* View All Button */}
-          <div className="text-center mt-8">
-            <button
-              onClick={() => setShowModal(true)}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-3 mx-auto"
-            >
-              <svg 
-                className="w-6 h-6" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
-                />
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" 
-                />
-              </svg>
-              <span>{language === 'en' ? 'View All Reviews' : 'مشاهدة الآراء'}</span>
-            </button>
-          </div>
+
         </div>
 
-        {/* Modal for all images */}
-        {showModal && (
+        {/* Modal for selected image */}
+        {showModal && selectedImage && (
           <div 
             className="modal-overlay"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setShowModal(false);
+              setSelectedImage('');
+            }}
           >
             <div 
-              className="modal-content"
+              className="max-w-4xl max-h-[90vh] relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
               <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-4 right-4 text-white hover:text-red-500 text-xl font-bold bg-red-600/20 hover:bg-red-600/40 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-200 z-10"
+                onClick={() => {
+                  setShowModal(false);
+                  setSelectedImage('');
+                }}
+                className="absolute -top-4 -right-4 text-white hover:text-red-500 text-2xl font-bold bg-red-600 hover:bg-red-700 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-200 z-10 shadow-lg"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
               
-              {/* Modal header */}
-              <div className="text-center p-6 border-b border-gray-600/50 bg-gradient-to-r from-red-600/10 to-red-700/10">
-                <h3 className="text-3xl font-bold text-white">
-                  {language === 'en' ? 'All Client Reviews' : 'جميع آراء العملاء'}
-                </h3>
-              </div>
-
-              {/* All images grid */}
-              <div className="modal-grid">
-                {testimonialImages.map((image, index) => (
-                  <div key={index} className="flex justify-center">
-                    <img
-                      src={image}
-                      alt={`Client testimonial ${index + 1}`}
-                      className="modal-image object-contain"
-                    />
-                  </div>
-                ))}
-              </div>
+              {/* Selected image */}
+              <img
+                src={selectedImage}
+                alt="Client testimonial"
+                className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+                style={{
+                  boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+                }}
+              />
             </div>
           </div>
         )}

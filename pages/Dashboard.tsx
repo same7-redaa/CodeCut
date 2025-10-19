@@ -12,6 +12,13 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Scroll to top when dashboard loads
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setLoading(false);
       if (user) {

@@ -21,7 +21,16 @@ const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Scroll to top immediately when route changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant' // Use instant instead of smooth for immediate scroll
+    });
+    
+    // Also ensure body scroll is reset
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }, [pathname]);
 
   return null;

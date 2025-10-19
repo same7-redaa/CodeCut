@@ -54,6 +54,15 @@ const ServicePortfolio: React.FC = () => {
     ? serviceNames[serviceId] || { en: 'Portfolio', ar: 'معرض الأعمال' }
     : { en: 'Our Portfolio', ar: 'معرض أعمالنا' };
 
+  // Ensure page starts from top
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, [serviceId]); // Re-run when serviceId changes
+
   // إغلاق المودال بمفتاح Escape
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
