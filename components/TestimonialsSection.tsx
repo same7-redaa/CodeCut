@@ -397,8 +397,19 @@ const TestimonialsSection: React.FC = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
             >
+              {/* Previous Button */}
+              <button
+                onClick={() => setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonialImages.length) % testimonialImages.length)}
+                className="absolute left-2 md:left-4 z-30 bg-red-600 hover:bg-red-700 text-white rounded-full p-3 md:p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+                aria-label={language === 'en' ? 'Previous image' : 'الصورة السابقة'}
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={language === 'en' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'} />
+                </svg>
+              </button>
+
               {/* Left Background Image */}
-              <div className="absolute left-0 md:left-8 z-10 opacity-60 transform -rotate-12 scale-75">
+              <div className="absolute left-12 md:left-20 z-10 opacity-60 transform -rotate-12 scale-75">
                 <img 
                   src={testimonialImages[(currentIndex - 1 + testimonialImages.length) % testimonialImages.length]} 
                   alt="آراء عملائنا"
@@ -421,13 +432,24 @@ const TestimonialsSection: React.FC = () => {
               </div>
               
               {/* Right Background Image */}
-              <div className="absolute right-0 md:right-8 z-10 opacity-60 transform rotate-12 scale-75">
+              <div className="absolute right-12 md:right-20 z-10 opacity-60 transform rotate-12 scale-75">
                 <img 
                   src={testimonialImages[(currentIndex + 1) % testimonialImages.length]} 
                   alt="آراء عملائنا"
                   className="max-w-[8rem] max-h-48 md:max-w-[10rem] md:max-h-60 w-auto h-auto object-contain rounded-2xl shadow-lg border-2 border-red-500/20 transition-all duration-1000"
                 />
               </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonialImages.length)}
+                className="absolute right-2 md:right-4 z-30 bg-red-600 hover:bg-red-700 text-white rounded-full p-3 md:p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+                aria-label={language === 'en' ? 'Next image' : 'الصورة التالية'}
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={language === 'en' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'} />
+                </svg>
+              </button>
             </div>
             
             {/* Swipe Instruction */}

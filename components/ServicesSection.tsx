@@ -188,15 +188,16 @@ const ServicesSection: React.FC = () => {
           {services.map((service, index) => (
             <AnimatedSection key={index}>
               <div 
-                className="bg-red-600 p-0 rounded-lg h-full border border-transparent hover:border-red-400 transition-all duration-300 transform hover:-translate-y-2 flex flex-col overflow-hidden"
+                className="p-0 rounded-lg h-full border border-transparent hover:border-red-400 transition-all duration-300 transform hover:-translate-y-2 flex flex-col overflow-hidden"
                 style={{
+                  background: '#f53240',
                   transition: 'all 0.3s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 30px rgba(239, 68, 68, 0.6), 0 0 60px rgba(239, 68, 68, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(245, 50, 64, 0.6), 0 0 60px rgba(245, 50, 64, 0.4)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 0 10px rgba(245, 50, 64, 0.3)';
                 }}
               >
                 {/* Content */}
