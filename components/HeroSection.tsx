@@ -56,8 +56,7 @@ const HeroSection: React.FC = () => {
             fontStyle: 'normal',
             textTransform: 'uppercase',
             WebkitTextStroke: '1px rgba(255, 255, 255, 0.05)',
-            textStroke: '1px rgba(255, 255, 255, 0.05)'
-          }}>
+          } as React.CSSProperties}>
             <span className="text-white" style={{
               textShadow: '0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.7)',
               filter: 'contrast(1.3) brightness(1.2) saturate(1.1)',
