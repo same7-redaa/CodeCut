@@ -52,7 +52,7 @@ const DeveloperSection: React.FC = () => {
 
             {/* Facebook */}
             <a
-              href="https://www.facebook.com/SAME7.REDAA"
+              href="https://www.facebook.com/share/17PeREgBmo/?mibextid=wwXIfr"
               target="_blank"
               rel="noopener noreferrer"
               className="group"

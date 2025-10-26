@@ -6,7 +6,7 @@ import AnimatedSection from './AnimatedSection';
 const socialLinks = [
   {
     name: 'Facebook',
-    url: 'https://www.facebook.com/share/19kqSVvSjP/?mibextid=wwXIfr',
+    url: 'https://www.facebook.com/share/17PeREgBmo/?mibextid=wwXIfr',
     color: '#1877F2',
     icon: (
       <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
